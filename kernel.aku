@@ -12,4 +12,8 @@ func @void kernel_main() {
     terminal_initialize();
 
     terminal_writestring("Hello from Aku on bare metal!\n");
+    terminal_writestring("I'm written mostly in Aku, but of course some assembly...\n");
+    terminal_writestring("Can't avoid that :/\n");
+    terminal_writestring("This was written to prove Aku can be used in the lowest of the low level programming :D\n");
+    terminal_writestring("Bye now :)\n");
 };
