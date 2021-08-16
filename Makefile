@@ -4,21 +4,33 @@ SOURCE_DIR = .
 SOURCES = $(wildcard $(SOURCE_DIR)/*.c)
 OBJECTS = $(addprefix ./, $(notdir $(SOURCES:.c=.o)))
 CC = i686-elf-gcc
+AS = i686-elf-as
 CFLAGS = -std=gnu99 -ffreestanding -Wall -Wextra
 EFLAGS = -ffreestanding -O2 -nostdlib boot.o
-YUC = yuc.bin
+AKUC = akuc.bin
 
-all: iso
+all: bootloader akufiles iso
 
-iso: yufiles yuos.bin
-	cp yuos.bin isodir/boot/
-	grub-mkrescue -o yuos.iso isodir
+SOURCES = $(wildcard $(SOURCE_DIR)/*.c)
 
-yuos.bin: $(OBJECTS)
-	$(CC) -T linker.ld -o $@ $(EFLAGS) kernel.o $^ -lgcc
+bootloader:
+	$(AS) boot.s -o boot.o
 
-yufiles:
-	$(YUC) kernel.yu --baremetal -o kernel.o --usecc=$(CC) --includeo $(OBJECTS)
+iso: akuos.bin
+	cp grub.cfg isodir/boot/grub/
+	cp akuos.bin isodir/boot/
+	grub-mkrescue -o akuos.iso isodir
+
+akuos.bin: $(OBJECTS)
+	$(CC) -T linker.ld -o $@ $(EFLAGS) kernel.o $< -lgcc
+
+akufiles:
+	$(AKUC) kernel.aku --baremetal -o kernel.o --usecc=$(CC) --includeo $(OBJECTS)
 
 %.o: $(SOURCE_DIR)/%.c
 	$(CC) -c $(CFLAGS) -o $@ $<
+
+clean:
+	rm *.o
+	rm *.bin
+	rm *.iso

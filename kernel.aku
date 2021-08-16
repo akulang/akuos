@@ -1,4 +1,4 @@
-include "yukern.h";
+include "akukern.h";
 
 extern terminal_initialize;
 extern terminal_write;
@@ -11,5 +11,5 @@ func @void terminal_writestring(@string data) {
 func @void kernel_main() {
     terminal_initialize();
 
-    terminal_writestring("Hello Kernel!\n");
+    terminal_writestring("Hello from Aku on bare metal!\n");
 };
