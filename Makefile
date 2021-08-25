@@ -7,7 +7,7 @@ CC = i686-elf-gcc
 AS = i686-elf-as
 CFLAGS = -std=gnu99 -ffreestanding -Wall -Wextra
 EFLAGS = -ffreestanding -O2 -nostdlib boot.o
-AKUC = akuc.bin
+AKUC = akuc
 
 all: bootloader akufiles iso
 
